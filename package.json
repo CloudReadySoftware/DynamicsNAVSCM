@@ -1,0 +1,193 @@
+{
+  "name": "dynamics-nav-scm",
+  "displayName": "Dynamics NAV SCM",
+  "description": "Source Code Management for Dynamics NAV made easy",
+  "version": "0.0.1",
+  "publisher": "Cloud Ready Software",
+	"icon": "images/icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CloudReadySoftware/DynamicsNAVSCM.git"
+  },
+  "engines": {
+    "vscode": "^1.12.1"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "*"
+  ],
+  "private": true,
+  "license": "GPL 3.0",
+  "main": "./build/extension",
+  "contributes": {
+    "commands": [
+      {
+        "command": "dynamicsnav.compile_obj",
+        "title": "Compile objects",
+        "category": "Dynamics NAV"
+      },
+      {
+        "command": "dynamicsnav.copy_db",
+        "title": "Copy database",
+        "category": "Dynamics NAV"
+      },
+      {
+        "command": "dynamicsnav.git2nav",
+        "title": "Git -> NAV",
+        "category": "Dynamics NAV"
+      },
+      {
+        "command": "dynamicsnav.nav2gitoriginal",
+        "title": "NAV -> Git (Original)",
+        "category": "Dynamics NAV"
+      },
+      {
+        "command": "dynamicsnav.nav2gitmodified",
+        "title": "NAV -> Git (Modified)",
+        "category": "Dynamics NAV"
+      },
+      {
+        "command": "dynamicsnav.new_env",
+        "title": "New development environment",
+        "category": "Dynamics NAV"
+      },
+      {
+        "command": "dynamicsnav.remove_env",
+        "title": "Remove development environment",
+        "category": "Dynamics NAV"
+      },
+      {
+        "command": "dynamicsnav.start_ide",
+        "title": "Start IDE",
+        "category": "Dynamics NAV"
+      },
+      {
+        "command": "dynamicsnav.start_rtc",
+        "title": "Start Windows Client",
+        "category": "Dynamics NAV"
+      },
+      {
+        "command": "dynamicsnav.start_shell",
+        "title": "Start Shell",
+        "category": "Dynamics NAV"
+      },
+      {
+        "command": "dynamicsnav.initialize_workspace",
+        "title": "Initialize Workspace",
+        "category": "Dynamics NAV"
+      },
+      {
+        "command": "dynamicsnav.version_objects",
+        "title": "Start versioning objects",
+        "category": "Dynamics NAV"
+      }
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "NAV Developer Extension config",
+      "properties": {
+        "dynamicsnav.zip": {
+          "type": "string",
+          "description": "Path to the Zip-file of the current Dynamics NAV solution (Workspace setting only)"
+        },
+        "dynamicsnav.originalobjects": {
+          "type": "string",
+          "description": "Path to the originalobjects of the current Dynamics NAV solution (Workspace setting only)"
+        },
+        "dynamicsnav.solutionName": {
+          "type": "string",
+          "default": null,
+          "description": "Name of the current Dynamics NAV solution (Workspace setting only)"
+        },
+        "dynamicsnav.remotedbname": {
+          "type": "string",
+          "description": "remotedbname of the current Dynamics NAV solution (Workspace setting only)"
+        },
+        "dynamicsnav.solutionVersion": {
+          "type": "string",
+          "description": "Version of the current Dynamics NAV solution (Workspace setting only)"
+        },
+        "dynamicsnav.originalpath": {
+          "type": "string",
+          "default": null,
+          "description": "Orignal path"
+        },
+        "dynamicsnav.modifiedpath": {
+          "type": "string",
+          "default": null,
+          "description": "Modified path"
+        },
+        "dynamicsnav.targetpath": {
+          "type": "string",
+          "default": null,
+          "description": "Target path"
+        },
+        "dynamicsnav.resultpath": {
+          "type": "string",
+          "default": null,
+          "description": "Resulting path"
+        },
+        "dynamicsnav.versions": {
+          "type": "array",
+          "default": null,
+          "description": "Versions object"
+        },
+        "dynamicsnav.installpath": {
+          "type": "string",
+          "default": "C:\\Program Files\\Microsoft Dynamics NAV\\",
+          "description": "The install path for NST/RTC"
+        },
+        "dynamicsnav.remotedbinstance": {
+          "type": "string",
+          "default": null,
+          "description": "Remote database instance"
+        },
+        "dynamicsnav.licensefile": {
+          "type": "string",
+          "default": null,
+          "description": "Location of the licensefile"
+        },
+        "dynamicsnav.commonsqllocation": {
+          "type": "string",
+          "default": null,
+          "description": "SQL backupfile location"
+        },
+        "dynamicsnav.uidoffset": {
+          "type": "integer",
+          "default": 50000,
+          "description": "The UidOffset in the Dynamics NAV solution"
+        },
+        "dynamicsnav.defaultNAVBuildFolder": {
+          "type": "string",
+          "default": "",
+          "description": "Default path to Navision versions" 
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "tsc -watch -p ./",
+    "postinstall": "node ./node_modules/vscode/bin/install"
+  },
+  "dependencies": {
+    "powershell": "^2.1.8",
+    "format-duration": "^1.0.0",
+    "path": "^0.12.7",
+    "vscode": "^1.1.0",
+    "time-stamp": "^1.0.1"
+  },
+  "devDependencies": {
+    "typescript": "^2.2.1",
+    "vscode": "^1.1.0",
+    "path": "^0.12.7",
+    "powershell": "^2.1.8",
+    "@types/node": "^7.0.8",
+    "gulp": "^3.9.1",
+    "del": "^2.2.2",
+    "gulp-typescript": "^3.1.5",
+    "vsce": "^1.18.0",
+    "format-duration": "^1.0.0"
+  }
+}

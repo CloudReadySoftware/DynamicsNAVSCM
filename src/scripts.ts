@@ -1,0 +1,19 @@
+import { join } from 'path';
+
+export const POWERSHELLPATH     = join(__dirname, 'powershell');
+export const COMPILE_OBJ        = join(POWERSHELLPATH, 'compile_obj.ps1');
+export const COPY_DB            = join(POWERSHELLPATH, 'copy_db.ps1');
+export const GIT2NAV            = join(POWERSHELLPATH, 'git2nav.ps1');
+export const NAV2GIT            = join(POWERSHELLPATH, 'nav2git.ps1');
+export const UPDATEGITDELTA     = join(POWERSHELLPATH, 'updategitdelta.ps1');
+export const UPDATEGITMODIFIED  = join(POWERSHELLPATH, 'updategitmodified.ps1');
+export const NEW_ENV            = join(POWERSHELLPATH, 'new_env.ps1');
+export const NEW_REMOTE         = join(POWERSHELLPATH, 'new_remote.ps1');
+export const REMOVE_ENV         = join(POWERSHELLPATH, 'remove_env.ps1');
+export const REMOVE_REMOTE      = join(POWERSHELLPATH, 'remove_remote.ps1');
+export const START_IDE          = join(POWERSHELLPATH, 'start_ide.ps1');
+export const START_REMOTE       = join(POWERSHELLPATH, 'start_remote.ps1');
+export const START_RTC          = join(POWERSHELLPATH, 'start_rtc.ps1');
+export const START_SHELL        = join(POWERSHELLPATH, 'start_shell.ps1');
+export const HELLO              = join(POWERSHELLPATH, 'hello.ps1');
+export const NEW_ENVIRONMENT    = join(POWERSHELLPATH, 'createNewEnvironment.ps1');
