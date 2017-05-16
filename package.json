@@ -3,7 +3,12 @@
   "displayName": "Dynamics NAV SCM",
   "description": "Source Code Management for Dynamics NAV made easy",
   "version": "0.0.1",
-  "publisher": "Cloud Ready Software",
+  "publisher": "CloudReadySoftware",
+  "author": {
+    "email": "info@cloud-ready-software.com",
+    "name": "Cloud Ready Software",
+    "url": "www.cloud-ready-software.com"
+  },
 	"icon": "images/icon.png",
   "repository": {
     "type": "git",
