@@ -16,6 +16,7 @@ Param(
 foreach($Module in $Modules)
 {
   Import-Module $Module -ErrorAction Stop -DisableNameChecking
+  Set-Location $env:SystemDrive
 }
 if(-not (Test-Path $NAVIDE))
 {

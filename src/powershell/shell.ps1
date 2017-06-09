@@ -15,6 +15,7 @@ $SolutionName = ""
 foreach($Module in $NewModules)
 {
   Import-Module $Module -ErrorAction Stop -DisableNameChecking
+  Set-Location $env:SystemDrive
 }
 
 if($NewVariables.Count -lt 2) 

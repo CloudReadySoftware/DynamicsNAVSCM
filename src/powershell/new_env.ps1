@@ -34,6 +34,7 @@ foreach($Module in $Modules)
     $UnloadedModules += $Module
   } else {
     Import-Module $Module
+    Set-Location $env:SystemDrive
   }
 }
 
