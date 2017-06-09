@@ -38,6 +38,8 @@ export class Powershell {
     }
 
     private addQuotes(parameter: string) {
+        if(typeof parameter === 'number')
+            return parameter;
         if(parameter.startsWith("'")){
             return parameter;
         }
