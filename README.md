@@ -2,6 +2,10 @@
 
 ## The project is still not production ready.
 
+## Links
+* Install directly in vscode: `ext install dynamics-nav-scm`
+* [VSCode Marketplace](https://marketplace.visualstudio.com/items?itemName=cloudreadysoftware.dynamics-nav-scm)
+
 ## Features
 
 Easy create a local Microsoft Dynamics NAV environment.
