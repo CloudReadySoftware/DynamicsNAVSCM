@@ -62,7 +62,6 @@ $Service = Get-Service -Name $FullServiceName -ErrorAction "SilentlyContinue"
 if(-not $Service)
 {
   New-NAVServiceTier -NSTFolder $NSTFolder -DatabaseName $DatabaseName -ServiceInstanceName $ServiceInstanceName -NSTEXE $NSTEXE
-  Set-ServiceCredential -ServiceInstanceName $ServiceInstanceName
   $Service = Get-Service -Name $FullServiceName
 }
 
