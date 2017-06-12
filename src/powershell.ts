@@ -85,15 +85,15 @@ export class Powershell {
 
         this.LogStart(command);
 
-        ps.on(['error', 'error-output'], data => {
+        ps.proc.stderr.on('data', data => {
             this.LogError(data);
         });
-        ps.on('output', data => {
+        ps.proc.stdout.on('data', data => {
             this.LogOutput(data);
         });
-        ps.on("end", data => {
+        ps.proc.on("close", exitcode => {
             this.endTime = new Date();
-            this.LogEnd(data, this.endTime.valueOf() - this.startTime.valueOf());
+            this.LogEnd(exitcode, this.endTime.valueOf() - this.startTime.valueOf());
         });
     }
 
@@ -108,10 +108,10 @@ export class Powershell {
             });
         }
     }
-    private LogEnd(data: string, duration: number) {
+    private LogEnd(exitcode: number, duration: number) {
         if(this.observers) {
             this.observers.forEach(observer => {
-                observer.LogEnd(data, duration);
+                observer.LogEnd(exitcode, duration);
             });
         }
     }

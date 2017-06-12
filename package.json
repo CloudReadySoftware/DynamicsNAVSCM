@@ -177,7 +177,7 @@
     "postinstall": "node ./node_modules/vscode/bin/install"
   },
   "dependencies": {
-    "powershell": "^2.1.8",
+    "powershell": "^2.2.0",
     "format-duration": "^1.0.0",
     "path": "^0.12.7",
     "vscode": "^1.1.0",

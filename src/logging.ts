@@ -6,7 +6,7 @@ export interface ILogger {
     LogOutput(data: string);
     LogError(data: string);
     LogStart(data: string);
-    LogEnd(data: string, duration: number);
+    LogEnd(exitcode: number, duration: number);
 }
 
 export class OutputLogger implements ILogger {
@@ -33,8 +33,8 @@ export class OutputLogger implements ILogger {
     LogStart(data: string) {
         this.channel.appendLine('Started function.');
     }
-    LogEnd(data: string, duration: number) {
-        let text = data + "\nDuration: " + formatduration(duration);
+    LogEnd(exitcode: number, duration: number) {
+        let text = logDataEnd(exitcode) + "Duration: " + formatduration(duration);
         this.channel.appendLine(text);
     }
 }
@@ -58,10 +58,16 @@ export class ConsoleLogger implements ILogger {
     LogStart(command: string) {
         console.log(appendTimestamp('Started function.\n\n' + command + '\n'));
     }
-    LogEnd(data: string, duration: number) {
-        let text = data + "\nDuration: " + formatduration(duration) + '\n' + '-'.repeat(30);
-        console.log(appendTimestamp(data));
+    LogEnd(exitcode: number, duration: number) {
+        let text = logDataEnd(exitcode) + "Duration: " + formatduration(duration) + '\n' + '-'.repeat(30);
+        console.log(appendTimestamp(text));
     }
+}
+
+function logDataEnd(exitcode: number) {
+    if(exitcode === 0)
+        return "";
+    return "Something went wrong\n";
 }
 
 function appendTimestamp(line: string) {
