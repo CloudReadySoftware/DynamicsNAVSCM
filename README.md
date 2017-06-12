@@ -1,8 +1,7 @@
 # vscode-dynamics-nav README
 
-## The project is still not production ready.
-
 ## Links
+* Checkout the [wiki](https://github.com/CloudReadySoftware/DynamicsNAVSCM/wiki) to see how to make it work currently.
 * Install directly in vscode: `ext install dynamics-nav-scm`
 * [VSCode Marketplace](https://marketplace.visualstudio.com/items?itemName=cloudreadysoftware.dynamics-nav-scm)
 
