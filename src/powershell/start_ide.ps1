@@ -26,5 +26,5 @@ if($process) {
  return
 }
 
-$Arguments = "servername={0}, database={1}, ntauthentication=yes" -f $env:computername,$DatabaseName
+$Arguments = "servername={0}, database={1}, ntauthentication=1" -f $env:computername,$DatabaseName
 Start-Process -FilePath $NAVIde -ArgumentList $Arguments
