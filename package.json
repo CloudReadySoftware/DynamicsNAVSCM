@@ -2,7 +2,7 @@
     "name": "dynamics-nav-scm",
     "displayName": "Dynamics NAV SCM",
     "description": "Source Code Management for Dynamics NAV made easy",
-    "version": "0.1.5",
+    "version": "0.1.6",
     "publisher": "cloudreadysoftware",
     "author": {
         "email": "info@cloud-ready-software.com",
