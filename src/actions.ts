@@ -143,8 +143,7 @@ export function startIDE() {
     ps.observers = observers;
     ps.settings = {
         databasename: settings[Settings.SOLUTIONNAME],
-        navide: settings[Settings.FINSQL],
-        IDFile: workspacefolder.TEMP + settings[Settings.SOLUTIONNAME] + '.zup'
+        navide: settings[Settings.FINSQL]
     };
     ps.invoke();
 }

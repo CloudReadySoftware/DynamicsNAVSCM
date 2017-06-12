@@ -2,9 +2,7 @@ Param(
   [Parameter(Mandatory)]
   [String]$NAVIDE,
   [Parameter(Mandatory)]
-  [String]$DatabaseName,
-  [Parameter(Mandatory)]
-  [String]$IDFile
+  [String]$DatabaseName
 )
 
 if(-not (Test-Path $NAVIde)) {
@@ -28,5 +26,5 @@ if($process) {
  return
 }
 
-$Arguments = "servername={0}, database={1}, ntauthentication=1, ID={2}" -f $env:computername,$DatabaseName,$IDFile
+$Arguments = "servername={0}, database={1}, ntauthentication=1, ID={1}" -f $env:computername,$DatabaseName
 Start-Process -FilePath $NAVIde -ArgumentList $Arguments
