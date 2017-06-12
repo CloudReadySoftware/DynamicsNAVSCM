@@ -13,6 +13,6 @@ export function createGitIgnorefile(Workspacefolder: string) {
     if(fs.existsSync(gitignorefile)){
         return
     }
-    var gitignorecontent = `lastimportedgithash`;
+    var gitignorecontent = `lastimportedgithash\ntemp`;
     fs.writeFile(gitignorefile, gitignorecontent);
 }
