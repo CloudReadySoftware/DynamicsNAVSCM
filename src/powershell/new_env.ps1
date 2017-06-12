@@ -81,16 +81,23 @@ Test-NAVInstanceWindows10 -NAVServiceInstance $ServiceInstanceName
 
 
 $username = whoami
-$isNAVUser = Get-NAVServerUser -ServerInstance $ServiceInstanceName | Where-Object {$PSItem.UserName -eq $username}
-if(-not $isNAVUser)
+try 
 {
-  $null = New-NAVServerUser -WindowsAccount $username -ServerInstance $ServiceInstanceName
-}
+  $isNAVUser = Get-NAVServerUser -ServerInstance $ServiceInstanceName | Where-Object {$PSItem.UserName -eq $username}
+  if(-not $isNAVUser)
+  {
+    $null = New-NAVServerUser -WindowsAccount $username -ServerInstance $ServiceInstanceName
+  }
 
-$isSuperUser = Get-NAVServerUserPermissionSet -PermissionSetId "SUPER" -WindowsAccount $username -ServerInstance $ServiceInstanceName
-if(-not $isSuperUser)
+  $isSuperUser = Get-NAVServerUserPermissionSet -PermissionSetId "SUPER" -WindowsAccount $username -ServerInstance $ServiceInstanceName
+  if(-not $isSuperUser)
+  {
+    $null = New-NAVServerUserPermissionSet -PermissionSetId "SUPER" -WindowsAccount $username -ServerInstance $ServiceInstanceName
+  }
+}
+catch
 {
-  $null = New-NAVServerUserPermissionSet -PermissionSetId "SUPER" -WindowsAccount $username -ServerInstance $ServiceInstanceName
+  
 }
 
 Set-UIDOffset -UIDOffset $UIDOffset -DatabaseName $DatabaseName
