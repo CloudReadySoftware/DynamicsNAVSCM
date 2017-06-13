@@ -80,8 +80,13 @@ export class Powershell {
     }
 
     private runPowershell(command: string) {
+        let options = {
+            debug: false,
+            noprofile: true,
+            executionpolicy: "Unrestricted"
+        };
         this.startTime = new Date();
-        let ps = new PowerShellRunner(command);
+        let ps = new PowerShellRunner(command, options);
 
         this.LogStart(command);
 
