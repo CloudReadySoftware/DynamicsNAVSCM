@@ -63,6 +63,7 @@ function Get-FilterText
   [CmdletBinding()]
   Param(
     [Parameter(Mandatory)]
+    [ValidateSet("all", "solution")]
     [String]$ExportOption,
     [Parameter(Mandatory)]
     [String]$SolutionName,
@@ -71,8 +72,12 @@ function Get-FilterText
   )
   Process
   {
-    $VersionFilter = 'Version List=@*{0}*|@*{1}*' -f $SolutionName,$NextVersionTag
-    $ModifiedFilter = 'Modified=1'
+    if($ExportOption -eq "all")
+    {
+      return "Compiled=1"
+    }
+    $VersionFilter = 'Compiled=1;Version List=@*{0}*|@*{1}*' -f $SolutionName,$NextVersionTag
+    $ModifiedFilter = 'Compiled=1;Modified=1'
     $VersionFilter,$ModifiedFilter
   }
 }
@@ -115,8 +120,7 @@ function Export-SplitTextFile
     
     $folder = Get-TempFolder
     $txtFile = Join-Path $folder "export.txt" 
-    $FinalFilter = 'Compiled=1;{0}' -f $Filter
-    $txtFile = Export-NAVApplicationObject -DatabaseName $DatabaseName -Path $txtFile -ExportTxtSkipUnlicensed -Filter $FinalFilter
+    $txtFile = Export-NAVApplicationObject -DatabaseName $DatabaseName -Path $txtFile -ExportTxtSkipUnlicensed -Filter $Filter
     if(Test-Path $txtFile) {
       $File = Get-Item $txtFile
       if($File.Length -ne 0){
