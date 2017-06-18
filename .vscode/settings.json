@@ -1,11 +1,11 @@
 {
     "files.exclude": {
-        "build": true,
+        "out": true,
         "node_modules": true,
         "*.vsix": true
     },
     "search.exclude": {
-        "build": true,
+        "out": true,
         "*.vsix": true
     }
 }

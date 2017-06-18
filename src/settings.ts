@@ -1,5 +1,6 @@
 import { WorkspaceConfiguration, workspace } from 'vscode';
 import { join } from 'path';
+import Helpers from './shared/helpers'
 
 export class Settings {
     static readonly ZIP = 'zip';
@@ -53,7 +54,7 @@ export class Settings {
         {
             return null;
         }
-        if(!(key in this.WORKSPACESETTINGS))
+        if(!(this.WORKSPACESETTINGS.includes(key)))
         {
             return this.config.get(key);
         };
@@ -61,7 +62,7 @@ export class Settings {
         let workspaceValue = inspection.workspaceValue;
         if(!workspaceValue)
         {
-            throw new Error(`Workspace key '${key}' needed in your setup.`);
+            Helpers.throwError(`Workspace key '${key}' needed in your setup.`);
         }
         return workspaceValue;
     }
