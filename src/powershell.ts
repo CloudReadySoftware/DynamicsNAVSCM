@@ -37,7 +37,9 @@ export class Powershell {
         }
     }
 
-    private addQuotes(parameter: string) {
+    private parseSetting(parameter: any) {
+        if(Array.isArray(parameter))
+            return "'" + parameter.join("','") + "'";
         if(typeof parameter === 'number')
             return parameter;
         if(parameter.startsWith("'")){
@@ -47,13 +49,13 @@ export class Powershell {
     }
 
     private getParameterString() {
-        let result = null;
+        let result = "";
         if(this.settings) {
             let settingsarray = [];
             let keys = Object.keys(this.settings);
             for(let i = 0;i < keys.length; i++) {
                 let currentKey = keys[i];
-                let parameterString = this.addQuotes(this.settings[currentKey]);
+                let parameterString = this.parseSetting(this.settings[currentKey]);
                 settingsarray.push(`-${currentKey} ${parameterString}`);
             }
             result = settingsarray.join(' ');

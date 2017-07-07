@@ -61,7 +61,7 @@ export function exportNAV2GitModified() {
     selectItem(exportNAV2GitModifiedWithFilter, settings);
 }
 
-function exportNAV2GitModifiedWithFilter(settings: Object, key: string) {
+function exportNAV2GitModifiedWithFilter(settings: Object, exportFilters: string) {
     let ps = new Powershell(scripts.NAV2GIT);
     ps.observers = observers;
     ps.modules = [
@@ -78,7 +78,7 @@ function exportNAV2GitModifiedWithFilter(settings: Object, key: string) {
         DestinationFolder: workspacefolder.MODIFIED,
         NextVersionTag: settings[Settings.NEXTVERSIONNO],
         SolutionName: settings[Settings.SOLUTIONNAME],
-        ExportOption: key
+        ExportFilters: exportFilters
     };
     ps.invoke();
 }

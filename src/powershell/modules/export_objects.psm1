@@ -26,14 +26,12 @@ function Export-IDENAVObject
     [Parameter(Mandatory)]
     [String]$NextVersionTag,
     [Parameter(Mandatory)]
-    [ValidateSet("all", "solution")]
-    [String]$ExportOption
+    [String[]]$ExportFilters
     )
   Process
   {
     $ExportedFolder = Get-TempFolder
-    $Filters = Get-FilterText -ExportOption $ExportOption -SolutionName $SolutionName -NextVersionTag $NextVersionTag
-    Export-SplitTextFile -DatabaseName $DatabaseName -DestinationFolder $ExportedFolder -Filters $Filters
+    Export-SplitTextFile -DatabaseName $DatabaseName -DestinationFolder $ExportedFolder -ExportFilters $ExportFilters
     Update-NAVObjectProperties -ExportedFiles $ExportedFolder -OriginalFiles $DestinationFolder -NextVersionTag $NextVersionTag
     Copy-UpdatedObjects -SourceFolder $ExportedFolder -DestinationFolder $DestinationFolder
     Reset-UnlicensedObjects -ObjectFolder $DestinationFolder
@@ -55,30 +53,6 @@ function Reset-UnlicensedObjects
   {
     $Objects = Get-ChildItem $ObjectFolder -Include "*.fob"
     Remove-Item $Objects
-  }
-}
-
-function Get-FilterText
-{
-  [CmdletBinding()]
-  Param(
-    [Parameter(Mandatory)]
-    [ValidateSet("all", "solution")]
-    [String]$ExportOption,
-    [Parameter(Mandatory)]
-    [String]$SolutionName,
-    [Parameter(Mandatory)]
-    [String]$NextVersionTag
-  )
-  Process
-  {
-    if($ExportOption -eq "all")
-    {
-      return "Compiled=1"
-    }
-    $VersionFilter = 'Compiled=1;Version List=@*{0}*|@*{1}*' -f $SolutionName,$NextVersionTag
-    $ModifiedFilter = 'Compiled=1;Modified=1'
-    $VersionFilter,$ModifiedFilter
   }
 }
 
@@ -114,9 +88,9 @@ function Export-SplitTextFile
     [Parameter(Mandatory)]
     [String]$DestinationFolder,
     [Parameter(Mandatory)]
-    [String[]]$Filters
+    [String[]]$ExportFilters
   )
-  foreach($Filter in $Filters) {
+  foreach($Filter in $ExportFilters) {
     
     $folder = Get-TempFolder
     $txtFile = Join-Path $folder "export.txt" 
