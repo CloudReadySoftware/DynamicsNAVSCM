@@ -32,6 +32,10 @@ export class Settings {
     static readonly NEXTVERSIONNO = 'nextversionno';
     static readonly SERVICENAME = 'servicename';
     static readonly DEFAULTNAVBUILDFOLDER = 'defaultNAVBuildFolder';
+    static readonly NSTPATH = 'nstpath';
+    static readonly RTCPATH = 'rtcpath';
+    static readonly FILTERS = 'filters'
+    static readonly DATEMODIFICATION = 'datemodification'
     private static WORKSPACEKEY: string = 'dynamicsnav';
 
     private static config: WorkspaceConfiguration;
@@ -68,6 +72,8 @@ export class Settings {
     }
     private static getSettings(){
         let result = {};
+        let nstpath = this.getSetting(this.NSTPATH);
+        let rtcpath = this.getSetting(this.RTCPATH);
 
         result[this.ZIP] = this.getSetting(this.ZIP);
         result[this.ORIGINALOBJECTS] = this.getSetting(this.ORIGINALOBJECTS);
@@ -85,8 +91,8 @@ export class Settings {
         result[this.COMMONSQLLOCATION] = this.getSetting(this.COMMONSQLLOCATION);
         result[this.UIDOFFSET] = this.getSetting(this.UIDOFFSET);
         result[this.BASEFOLDER] = this.joinPaths([result[this.INSTALLPATH], result[this.SOLUTIONNAME]]);
-        result[this.RTCFOLDER] = this.joinPaths([result[this.BASEFOLDER], this.RTCFOLDERNAME]);
-        result[this.NSTFOLDER] = this.joinPaths([result[this.BASEFOLDER], this.NSTFOLDERNAME]);
+        result[this.RTCFOLDER] = rtcpath ? rtcpath : this.joinPaths([result[this.BASEFOLDER], this.RTCFOLDERNAME]);
+        result[this.NSTFOLDER] = nstpath ? nstpath : this.joinPaths([result[this.BASEFOLDER], this.NSTFOLDERNAME]);
         result[this.FINSQL] = this.joinPaths([result[this.RTCFOLDER], this.FINSQLEXE]);
         result[this.RTC] = this.joinPaths([result[this.RTCFOLDER], this.RTCEXE]);
         result[this.NST] = this.joinPaths([result[this.NSTFOLDER], this.NSTEXE]);
@@ -98,6 +104,8 @@ export class Settings {
         result[this.NEXTVERSIONNO] = `${result[this.SOLUTIONNAME]}_DEV`;
         result[this.SERVICENAME] = `${this.NSTSERVICENAME}${result[this.SOLUTIONNAME]}`;
         result[this.DEFAULTNAVBUILDFOLDER] = this.getSetting(this.DEFAULTNAVBUILDFOLDER);
+        result[this.FILTERS] = this.getSetting(this.FILTERS);
+        result[this.DATEMODIFICATION] = this.getSetting(this.DATEMODIFICATION);
             
         return result;
     }

@@ -1,18 +1,3 @@
-
-function Export-FOB
-{
-  [CmdletBinding()]
-  Param(    
-    )
-  Process
-  {
-    throw "STILL TODO!"
-    #Export fob file with filter saying all objects with the same versionnumber as the current one. 
-    $fobFile = Join-Path $NAVRepo "Export.fob" 
-    Export-NAVApplicationObject -DatabaseName $NAVDatabaseName -Path $fobFile -Filter "Version List=@*$NAVSolutionName*"
-  }
-}
-
 function Export-IDENAVObject 
 {
   [CmdletBinding()]
@@ -21,26 +6,23 @@ function Export-IDENAVObject
     [String]$DatabaseName,
     [Parameter(Mandatory)]
     [String]$DestinationFolder,
-    [Parameter(Mandatory)]
-    [String]$SolutionName,
-    [Parameter(Mandatory)]
-    [String]$NextVersionTag,
-    [Parameter(Mandatory)]
-    [ValidateSet("all", "solution")]
-    [String]$ExportOption
+    [Parameter()]
+    [String]$TempFolder,
+    [Parameter()]
+    [String[]]$Filters,
+    [Parameter()]
+    [Boolean]$DateModification
     )
   Process
   {
-    $ExportedFolder = Get-TempFolder
-    $Filters = Get-FilterText -ExportOption $ExportOption -SolutionName $SolutionName -NextVersionTag $NextVersionTag
-    Export-SplitTextFile -DatabaseName $DatabaseName -DestinationFolder $ExportedFolder -Filters $Filters
-    Update-NAVObjectProperties -ExportedFiles $ExportedFolder -OriginalFiles $DestinationFolder -NextVersionTag $NextVersionTag
-    Copy-UpdatedObjects -SourceFolder $ExportedFolder -DestinationFolder $DestinationFolder
+    $NewTempFolder = Get-TempFolder -SourceFolder $TempFolder
+    $SplitFolder = Join-Path $NewTempFolder "split"
+    Export-SplitTextFile -DatabaseName $DatabaseName -DestinationFolder $SplitFolder -TempFolder $NewTempFolder -Filters $Filters
+    Update-NAVObjectProperties -ExportedFiles $SplitFolder -OriginalFiles $DestinationFolder -DateModification $DateModification
+    Copy-UpdatedObjects -SourceFolder $SplitFolder -DestinationFolder $DestinationFolder
     Reset-UnlicensedObjects -ObjectFolder $DestinationFolder
-    Sync-NAVObjectFiles -DestinationFolder $DestinationFolder -DatabaseName $DatabaseName
-    Remove-Item $ExportedFolder -Recurse -Force
-    $IdeResultFolder = Join-Path $env:TEMP 'NavIde'
-    Remove-Item $IdeResultFolder -Recurse
+    Sync-NAVObjectFiles -ObjectFolder $DestinationFolder -DatabaseName $DatabaseName
+    Remove-Item $NewTempFolder -Recurse -Force
   }
 }
 
@@ -54,31 +36,9 @@ function Reset-UnlicensedObjects
   Process
   {
     $Objects = Get-ChildItem $ObjectFolder -Include "*.fob"
-    Remove-Item $Objects
-  }
-}
-
-function Get-FilterText
-{
-  [CmdletBinding()]
-  Param(
-    [Parameter(Mandatory)]
-    [ValidateSet("all", "solution")]
-    [String]$ExportOption,
-    [Parameter(Mandatory)]
-    [String]$SolutionName,
-    [Parameter(Mandatory)]
-    [String]$NextVersionTag
-  )
-  Process
-  {
-    if($ExportOption -eq "all")
-    {
-      return "Compiled=1"
+    if($Objects) {
+      Remove-Item $Objects
     }
-    $VersionFilter = 'Compiled=1;Version List=@*{0}*|@*{1}*' -f $SolutionName,$NextVersionTag
-    $ModifiedFilter = 'Compiled=1;Modified=1'
-    $VersionFilter,$ModifiedFilter
   }
 }
 
@@ -113,12 +73,16 @@ function Export-SplitTextFile
     [String]$DatabaseName,
     [Parameter(Mandatory)]
     [String]$DestinationFolder,
-    [Parameter(Mandatory)]
+    [Parameter()]
+    [String]$TempFolder,
+    [Parameter()]
     [String[]]$Filters
   )
+  [int]$count = 0
   foreach($Filter in $Filters) {
-    
-    $folder = Get-TempFolder
+    $count += 1
+    $foldername = Join-Path $TempFolder "export$count"
+    $folder = New-Item -Path $Foldername -ItemType Directory
     $txtFile = Join-Path $folder "export.txt" 
     $txtFile = Export-NAVApplicationObject -DatabaseName $DatabaseName -Path $txtFile -ExportTxtSkipUnlicensed -Filter $Filter
     if(Test-Path $txtFile) {
@@ -138,26 +102,25 @@ function Update-NAVObjectProperties {
     [String]$ExportedFiles,
     [Parameter(Mandatory)]
     [String]$OriginalFiles,
-    [Parameter(Mandatory)]
-    [String]$NextVersionTag
+    [Parameter()]
+    [Boolean]$DateModification = $false
   )
+    "DateModification was: {0}" -f $DateModification
+    if(!$DateModification) {
+      return
+    }
     $modifiedObjects = Get-ChildItem $ExportedFiles
     foreach($modifiedObject in $modifiedObjects)
     {
       $OrignalFile = Join-Path $OriginalFiles $modifiedObject.Name
-      $CurrentVersionList = ""
       $DateValue = Get-Date -Hour 0 -Minute 30 -Second 0
       if(Test-Path -Path $OrignalFile -PathType Leaf)
       {
         $OrignalInfo = Get-NAVApplicationObjectProperty -Source $OrignalFile
         $DateValue = "{0} {1}" -f $OrignalInfo.Date,$OrignalInfo.Time
-        $CurrentVersionList = $OrignalInfo.VersionList
       }
-      $DebugInfo = 'CurrentFile: "{3}" CurrentVersionList: "{0}", NextVersionTag: "{1}" OriginalFile: "{2}"' -f $CurrentVersionList, $NextVersionTag, $OrignalFile, $modifiedObject.Name
-      Write-Debug $DebugInfo
-      $NewVersionList = Add-NAVVersionNumber -VersionList $CurrentVersionList -NewVersionNo $NextVersionTag
       $DateTimeProp = Get-Date -Date $DateValue -Format "G"
-      Set-NAVApplicationObjectProperty -TargetPath $modifiedObject.FullName -DateTimeProperty $DateTimeProp -ModifiedProperty "No" -VersionListProperty $NewVersionList
+      Set-NAVApplicationObjectProperty -TargetPath $modifiedObject.FullName -DateTimeProperty $DateTimeProp
     }
 }
 
@@ -176,8 +139,12 @@ function Sync-NAVObjectFiles
     $currentFiles = Get-ChildItem $objectFiles
     $databaseObjects = Get-NAVDatabaseObjects -DatabaseName $DatabaseName
     $result = Compare-NAVExportObjects -FileList $currentFiles -DatabaseList $databaseObjects
-    Remove-Item $result.FileDeleteList
-    Export-FobFiles -DatabaseName $DatabaseName -DatabaseObjects $result.DatabaseDeleteList -ObjectFolder $ObjectFolder
+    if($result.FileDeleteList -ne $null) {
+      Remove-Item $result.FileDeleteList
+    }
+    if($result.DatabaseDeleteList -ne $null) {
+      Export-FobFiles -DatabaseName $DatabaseName -DatabaseObjects $result.DatabaseDeleteList -ObjectFolder $ObjectFolder
+    }
   }
 }
 

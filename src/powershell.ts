@@ -40,6 +40,8 @@ export class Powershell {
     private addQuotes(parameter: string) {
         if(typeof parameter === 'number')
             return parameter;
+        if(typeof parameter === 'boolean')
+            return `$${parameter}`
         if(parameter.startsWith("'")){
             return parameter;
         }
@@ -53,7 +55,8 @@ export class Powershell {
             let keys = Object.keys(this.settings);
             for(let i = 0;i < keys.length; i++) {
                 let currentKey = keys[i];
-                let parameterString = this.addQuotes(this.settings[currentKey]);
+                let currentvalue = this.settings[currentKey];
+                let parameterString = Array.isArray(currentvalue) ? this.getArrayParameter(currentvalue) : this.addQuotes(currentvalue);
                 settingsarray.push(`-${currentKey} ${parameterString}`);
             }
             result = settingsarray.join(' ');

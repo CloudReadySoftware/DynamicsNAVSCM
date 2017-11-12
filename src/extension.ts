@@ -7,10 +7,7 @@ export function activate(context: ExtensionContext) {
         commands.registerCommand('dynamicsnav.compile_obj', customActions.compileNAVObjects),
         commands.registerCommand('dynamicsnav.copy_db', customActions.copyDB),
         commands.registerCommand('dynamicsnav.git2nav', customActions.importObjects),
-        commands.registerCommand('dynamicsnav.nav2gitoriginal', customActions.exportNAV2GitOriginal),
-        commands.registerCommand('dynamicsnav.nav2gitmodified', customActions.exportNAV2GitModified),
-        commands.registerCommand('dynamicsnav.updategitdelta', customActions.exportNAV2GitModified),
-        commands.registerCommand('dynamicsnav.updategitmodified', customActions.exportNAV2GitModified),
+        commands.registerCommand('dynamicsnav.nav2git', customActions.pickFilesExport),
         commands.registerCommand('dynamicsnav.new_env', customActions.newEnvironment),
         commands.registerCommand('dynamicsnav.new_remote', null),
         commands.registerCommand('dynamicsnav.remove_env', customActions.removeEnvironment),
@@ -20,7 +17,6 @@ export function activate(context: ExtensionContext) {
         commands.registerCommand('dynamicsnav.start_rtc', null),
         commands.registerCommand('dynamicsnav.start_shell', customActions.startShell),
         commands.registerCommand('dynamicsnav.initialize_workspace', customActions.init_workspace),
-        commands.registerCommand('dynamicsnav.version_objects', customActions.versionObjects),
         commands.registerCommand('dynamicsnav.cleannavdatabase', null)
     ];
     context.subscriptions.concat(commandList);

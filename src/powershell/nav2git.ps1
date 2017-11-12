@@ -7,13 +7,12 @@ Param(
   [String]$NAVIDE,
   [Parameter(Mandatory)]
   [String]$DestinationFolder,
-  [Parameter(Mandatory)]
-  [String]$SolutionName,
-  [Parameter(Mandatory)]
-  [String]$NextVersionTag,
-  [Parameter(Mandatory)]
-  [ValidateSet("all", "solution")]
-  [String]$ExportOption
+  [Parameter()]
+  [String]$TempFolder,
+  [Parameter()]
+  [String[]]$Filters,
+  [Parameter()]
+  [Boolean]$DateModification
 )
 
 foreach($Module in $Modules)
@@ -26,4 +25,4 @@ if(-not (Test-Path $NAVIDE))
   throw "Cant find NAVIDE at $NAVIDE"
 }
 
-Export-IDENAVObject -DatabaseName $DatabaseName -DestinationFolder $DestinationFolder -SolutionName $SolutionName -NextVersionTag $NextVersionTag -ExportOption $ExportOption
+Export-IDENAVObject -DatabaseName $DatabaseName -DestinationFolder $DestinationFolder -TempFolder $TempFolder -Filters $Filters -DateModification $DateModification

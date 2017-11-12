@@ -9,26 +9,26 @@ export class ExportOption implements QuickPickItem
     key: string;
 }
 
-function getObjects(solutionName: string, nextVersionNo: string) 
+function getObjects() 
 {
     let modified: ExportOption = {
-        description: 'Export the solution objects.',
-        label: 'Solution',
-        detail: `2 exports: Version List=@*${solutionName}*|@*${nextVersionNo}*, Modified=True`,
-        key: 'solution'
+        description: 'Export using custom fields',
+        label: 'Custom filters',
+        detail: `Export using the filters set in the setting "dynamicsnav.filters"`,
+        key: "filters"
     }
     let all: ExportOption = {
         description: 'Export all the objects.',
         detail: 'No filters. Slow, 2 min +',
         label: 'All',
-        key: 'all'
+        key: "all"
     }
     return [modified, all];
 }
 
-export function selectItem(cb: Function, settings: Object) 
+export function selectItem(cb: Function) 
 {
-    let items = getObjects(settings[Settings.SOLUTIONNAME], settings[Settings.NEXTVERSIONNO]);
+    let items = getObjects();
     let options: QuickPickOptions = {
         matchOnDescription: false,
         placeHolder: "What objects do you want to export?"
@@ -36,7 +36,8 @@ export function selectItem(cb: Function, settings: Object)
     let quickpick = window.showQuickPick<ExportOption>(items, options);
     quickpick.then((item: ExportOption) => {
         if(item && cb){
-            cb(settings, item.key);
+            let filters :boolean = item.key === "filters";
+            cb(filters);
         }
     });
 }
