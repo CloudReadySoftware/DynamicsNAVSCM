@@ -30,12 +30,12 @@ export function copyDB() {
     ps.invoke();
 }
 
-export function exportNAV2GitOriginal() {
-    let settings = Settings.GetAllSettings();
-    selectItem(exportNAV2GitOriginalNoFilter, settings);
+export function pickFilesExport() {
+    selectItem(exportNAV2Git);
 }
 
-function exportNAV2GitOriginalNoFilter(settings: Object, key: string) {
+function exportNAV2Git(filters: boolean) {
+    let settings = Settings.GetAllSettings();
     let ps = new Powershell(scripts.NAV2GIT);
     ps.observers = observers;
     ps.modules = [
@@ -48,37 +48,10 @@ function exportNAV2GitOriginalNoFilter(settings: Object, key: string) {
     ps.settings = {
         DatabaseName: settings[Settings.SOLUTIONNAME],
         NAVIDE: settings[Settings.FINSQL],
-        DestinationFolder: workspacefolder.ORIGINAL,
-        NextVersionTag: settings[Settings.NEXTVERSIONNO],
-        SolutionName: settings[Settings.SOLUTIONNAME],
-        ExportOption: key
-    };
-    ps.invoke();
-}
-
-export function exportNAV2GitModified() {
-    let settings = Settings.GetAllSettings();
-    selectItem(exportNAV2GitModifiedWithFilter, settings);
-}
-
-function exportNAV2GitModifiedWithFilter(settings: Object, exportFilters: string) {
-    let ps = new Powershell(scripts.NAV2GIT);
-    ps.observers = observers;
-    ps.modules = [
-        modules.COMMONFUNCTIONS,
-        modules.EXPORT_OBJECTS,
-        modules.VERSION,
-        'SQLPS',
-        settings[Settings.IDEMODULE],
-        settings[Settings.MODELTOOLS]
-    ];
-    ps.settings = {
-        DatabaseName: settings[Settings.SOLUTIONNAME],
-        NAVIDE: settings[Settings.FINSQL],
-        DestinationFolder: workspacefolder.MODIFIED,
-        NextVersionTag: settings[Settings.NEXTVERSIONNO],
-        SolutionName: settings[Settings.SOLUTIONNAME],
-        ExportFilters: exportFilters
+        DestinationFolder: workspacefolder.SOURCE,
+        TempFolder: workspacefolder.TEMP,
+        Filters: settings[Settings.FILTERS],
+        DateModification: settings[Settings.DATEMODIFICATION]
     };
     ps.invoke();
 }
@@ -110,7 +83,6 @@ export function removeEnvironment() {
 }
 
 export function newEnvironment() {
-    console.log('hello world');
     let settings = Settings.GetAllSettings();
     let ps = new Powershell(scripts.NEW_ENV);
     ps.observers = observers;
@@ -148,11 +120,6 @@ export function startIDE() {
     ps.invoke();
 }
 
-export function versionObjects() {
-    let settings = Settings.GetAllSettings();
-    inputNewVersionNumber(settings)
-}
-
 export function startShell() {
     let settings = Settings.GetAllSettings();
     let ps = new Powershell(scripts.START_SHELL);
@@ -182,9 +149,7 @@ export function init_workspace() {
     let settings = Settings.GetAllSettings();
     createFolderIfNotExist(workspacefolder.ADDIN);
     createFolderIfNotExist(workspacefolder.ADDINRESOURCES);
-    createFolderIfNotExist(workspacefolder.MODIFIED);
-    createFolderIfNotExist(workspacefolder.ORIGINAL);
-    createFolderIfNotExist(workspacefolder.DELTA);
+    createFolderIfNotExist(workspacefolder.SOURCE);
     createFolderIfNotExist(workspacefolder.REPORTLAYOUTS);
     createFolderIfNotExist(workspacefolder.TEMP);
     createGitIgnorefile(workspacefolder.WORKSPACE);
@@ -202,7 +167,7 @@ export function importObjects() {
         modules.IMPORT_OBJECTS
         ];
     ps.settings = { 
-        ObjectsFolder: workspacefolder.MODIFIED,
+        ObjectsFolder: workspacefolder.SOURCE,
         workspacefolder: workspacefolder.WORKSPACE,
         SolutionName: settings[Settings.SOLUTIONNAME],
         DatabaseName: settings[Settings.SOLUTIONNAME],

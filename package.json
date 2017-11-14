@@ -7,7 +7,7 @@
   "author": {
     "email": "info@cloud-ready-software.com",
     "name": "Cloud Ready Software",
-    "url": "www.cloud-ready-software.com"
+    "url": "http://www.cloud-ready-software.com"
   },
   "icon": "images/icon.png",
   "repository": {
@@ -44,13 +44,8 @@
         "category": "Dynamics NAV"
       },
       {
-        "command": "dynamicsnav.nav2gitoriginal",
-        "title": "NAV -> Git (Original)",
-        "category": "Dynamics NAV"
-      },
-      {
-        "command": "dynamicsnav.nav2gitmodified",
-        "title": "NAV -> Git (Modified)",
+        "command": "dynamicsnav.nav2git",
+        "title": "NAV -> Git",
         "category": "Dynamics NAV"
       },
       {
@@ -95,34 +90,37 @@
       "properties": {
         "dynamicsnav.zip": {
           "type": "string",
-          "description": "Path to the Zip-file of the current Dynamics NAV solution (Workspace setting only)"
+          "description": "Path to the Zip-file of the current Dynamics NAV solution (Workspace only setting)"
         },
         "dynamicsnav.originalobjects": {
           "type": "string",
-          "description": "Path to the originalobjects of the current Dynamics NAV solution (Workspace setting only)"
+          "description": "Path to the originalobjects of the current Dynamics NAV solution (Workspace only setting)"
         },
         "dynamicsnav.solutionName": {
           "type": "string",
           "default": null,
-          "description": "Name of the current Dynamics NAV solution (Workspace setting only)"
+          "description": "Name of the current Dynamics NAV solution (Workspace only setting)"
         },
         "dynamicsnav.remotedbname": {
           "type": "string",
-          "description": "remotedbname of the current Dynamics NAV solution (Workspace setting only)"
+          "description": "remotedbname of the current Dynamics NAV solution (Workspace only setting)"
         },
         "dynamicsnav.solutionVersion": {
           "type": "string",
-          "description": "Version of the current Dynamics NAV solution (Workspace setting only)"
+          "description": "Version of the current Dynamics NAV solution (Workspace only setting)"
         },
-        "dynamicsnav.originalpath": {
+        "dynamicsnav.rtcpath": {
+          "type": "string",
+          "description": "Path to the folder which contains the role tailored client (Workspace only setting)"
+        },
+        "dynamicsnav.nstpath": {
+          "type": "string",
+          "description": "Path to the folder which contains the Dynamics NAV service tier (Workspace only setting)"
+        },
+        "dynamicsnav.sourcepath": {
           "type": "string",
           "default": null,
-          "description": "Orignal path"
-        },
-        "dynamicsnav.modifiedpath": {
-          "type": "string",
-          "default": null,
-          "description": "Modified path"
+          "description": "Source path"
         },
         "dynamicsnav.targetpath": {
           "type": "string",
@@ -168,6 +166,15 @@
           "type": "string",
           "default": "",
           "description": "Default path to Navision versions"
+        },
+        "dynamicsnav.filters": {
+          "type": "array",
+          "description": "Filter to export"
+        },
+        "dynamicsnav.datemodification": {
+          "type": "boolean",
+          "default": true,
+          "description": "Modify the date to match the original object"
         }
       }
     }
