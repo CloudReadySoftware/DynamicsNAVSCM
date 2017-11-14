@@ -50,7 +50,7 @@ export class Settings {
     private static readonly MANAGEMENTDLL = 'Microsoft.Dynamics.Nav.Management.dll';
     private static readonly ADDIN = 'Add-ins';
     private static readonly NSTSERVICENAME = 'MicrosoftDynamicsNavServer$'
-    private static readonly WORKSPACESETTINGS = [Settings.SOLUTIONNAME, Settings.ZIP];
+    private static readonly WORKSPACESETTINGS = [Settings.SOLUTIONNAME];
 
     private static getSetting(key: string)
     {

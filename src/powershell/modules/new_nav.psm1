@@ -92,7 +92,7 @@ function Copy-ServiceTier
       $null = New-Item -Path $NSTFolder -ItemType Directory
     }
     $BaseFiles = Join-Path $ExtractedNAVFiles "ServiceTier\program files\Microsoft Dynamics NAV\$NAVVersion\Service\*"
-    $LanguageFiles = Join-Path $ExtractedNAVFiles "Installers\DK\Server\PFiles\Microsoft Dynamics NAV\$NAVVersion\Service\*"
+    $LanguageFiles = Join-Path $ExtractedNAVFiles "Installers\*\Server\PFiles\Microsoft Dynamics NAV\$NAVVersion\Service\*"
     Copy-Item -Path $BaseFiles -Destination $NSTFolder -Recurse
     Copy-Item -Path $LanguageFiles -Destination $NSTFolder -Recurse -Force
   }
@@ -116,7 +116,7 @@ function Copy-RoleTailoredClient
       $null = New-Item -Path $RTCFolder -ItemType Directory
     }
     $BaseFiles = Join-Path $ExtractedNAVFiles "RoleTailoredClient\program files\Microsoft Dynamics NAV\$NAVVersion\RoleTailored Client\*"
-    $LanguageFiles = Join-Path $ExtractedNAVFiles "Installers\DK\RTC\PFiles\Microsoft Dynamics NAV\$NAVVersion\RoleTailored Client\*"
+    $LanguageFiles = Join-Path $ExtractedNAVFiles "Installers\*\RTC\PFiles\Microsoft Dynamics NAV\$NAVVersion\RoleTailored Client\*"
     Copy-Item -Path $BaseFiles -Destination $RTCFolder -Recurse
     Copy-Item -Path $LanguageFiles -Destination $RTCFolder -Recurse -Force
     Copy-UserSettings -ExtractedNAVFiles $ExtractedNAVFiles -NAVVersion $NAVVersion
