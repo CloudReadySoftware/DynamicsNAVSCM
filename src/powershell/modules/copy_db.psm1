@@ -38,7 +38,6 @@ function Test-SQLConnection
     )
   Process
   {
-    $sqlServer = New-Object ("Microsoft.SqlServer.Management.Smo.Server") $ServerInstance
     $dbConnection = New-Object "System.Data.SqlClient.SqlConnection"
     $dbConnection.ConnectionString = "Data Source=$ServerInstance; Database=$DatabaseName;`
                                     Integrated Security=True;Connection Timeout=$ConnectionTimeout"

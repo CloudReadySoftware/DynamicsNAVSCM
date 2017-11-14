@@ -18,7 +18,7 @@ function getObjects()
         key: "filters"
     }
     let all: ExportOption = {
-        description: 'Export all the objects.',
+        description: 'Export all the compiled objects.',
         detail: 'No filters. Slow, 2 min +',
         label: 'All',
         key: "all"
@@ -40,4 +40,17 @@ export function selectItem(cb: Function)
             cb(filters);
         }
     });
+}
+
+function getExportFilters(key: string, currentVersionNumber: string, nextVersionNumber: string)
+{
+    switch(key)
+    {
+        case "all":
+            return "Compiled=1";
+        case "solution":
+            return [`Version List=@*${currentVersionNumber}*|@*${nextVersionNumber}*;Compiled=1`, `Modified=1;Compiled=1`]
+        default:
+            return "";
+    }
 }
