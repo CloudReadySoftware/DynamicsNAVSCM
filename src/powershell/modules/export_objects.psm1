@@ -76,7 +76,7 @@ function Export-SplitTextFile
     [Parameter()]
     [String]$TempFolder,
     [Parameter()]
-    [String[]]$Filters
+    [String[]]$Filters = @('')
   )
   [int]$count = 0
   foreach($Filter in $Filters) {
@@ -105,22 +105,21 @@ function Update-NAVObjectProperties {
     [Parameter()]
     [Boolean]$DateModification = $false
   )
-    "DateModification was: {0}" -f $DateModification
     if(!$DateModification) {
       return
     }
-    $modifiedObjects = Get-ChildItem $ExportedFiles
-    foreach($modifiedObject in $modifiedObjects)
+    $ExportedObjects = Get-ChildItem $ExportedFiles
+    foreach($ExportedObject in $ExportedObjects)
     {
-      $OrignalFile = Join-Path $OriginalFiles $modifiedObject.Name
+      $OrignalObject = Join-Path $OriginalFiles $ExportedObject.Name
       $DateValue = Get-Date -Hour 0 -Minute 30 -Second 0
-      if(Test-Path -Path $OrignalFile -PathType Leaf)
+      if(Test-Path -Path $OrignalObject -PathType Leaf)
       {
-        $OrignalInfo = Get-NAVApplicationObjectProperty -Source $OrignalFile
+        $OrignalInfo = Get-NAVApplicationObjectProperty -Source $OrignalObject
         $DateValue = "{0} {1}" -f $OrignalInfo.Date,$OrignalInfo.Time
       }
       $DateTimeProp = Get-Date -Date $DateValue -Format "G"
-      Set-NAVApplicationObjectProperty -TargetPath $modifiedObject.FullName -DateTimeProperty $DateTimeProp
+      Set-NAVApplicationObjectProperty -TargetPath $ExportedObject.FullName -DateTimeProperty $DateTimeProp
     }
 }
 

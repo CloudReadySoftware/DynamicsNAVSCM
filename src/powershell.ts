@@ -37,6 +37,18 @@ export class Powershell {
         }
     }
 
+
+    private addQuotes(parameter: string) {
+        if (typeof parameter === 'number')
+            return parameter;
+        if (typeof parameter === 'boolean')
+            return `$${parameter}`
+        if (parameter.startsWith("'")) {
+            return parameter;
+        }
+        return `'${parameter}'`;
+    }
+
     private parseSetting(parameter: any) {
         if(Array.isArray(parameter))
             return "'" + parameter.join("','") + "'";

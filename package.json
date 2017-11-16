@@ -96,10 +96,10 @@
           "type": "string",
           "description": "Path to the originalobjects of the current Dynamics NAV solution (Workspace only setting)"
         },
-        "dynamicsnav.solutionName": {
+        "dynamicsnav.databasename": {
           "type": "string",
           "default": null,
-          "description": "Name of the current Dynamics NAV solution (Workspace only setting)"
+          "description": "Name of the current database you are working on (Workspace only setting)"
         },
         "dynamicsnav.remotedbname": {
           "type": "string",
