@@ -25,7 +25,7 @@ export function copyDB() {
         SourceDatabaseInstance: settings[Settings.REMOTEDBINSTANCE],
         SourceDatabaseName: settings[Settings.REMOTEDBNAME],
         CommonSQLLocation: settings[Settings.COMMONSQLLOCATION],
-        DestinationDatabaseName: settings[Settings.SOLUTIONNAME]
+        DestinationDatabaseName: settings[Settings.DATABASENAME]
     };
     ps.invoke();
 }
@@ -46,7 +46,7 @@ function exportNAV2Git(filters: boolean) {
         settings[Settings.MODELTOOLS]
     ];
     ps.settings = {
-        DatabaseName: settings[Settings.SOLUTIONNAME],
+        DatabaseName: settings[Settings.DATABASENAME],
         NAVIDE: settings[Settings.FINSQL],
         DestinationFolder: workspacefolder.SOURCE,
         TempFolder: workspacefolder.TEMP,
@@ -65,7 +65,7 @@ export function compileNAVObjects() {
         settings[Settings.IDEMODULE]
     ];
     ps.settings = {
-        DatabaseName: settings[Settings.SOLUTIONNAME],
+        DatabaseName: settings[Settings.DATABASENAME],
         NAVIDE: settings[Settings.FINSQL]
     }
     ps.invoke();
@@ -94,14 +94,14 @@ export function newEnvironment() {
     ];
     ps.settings = {
         Zip: settings[Settings.ZIP],
-        ServiceInstanceName:  settings[Settings.SOLUTIONNAME],
+        ServiceInstanceName: settings[Settings.DATABASENAME],
         NSTFolder: settings[Settings.NSTFOLDER],
         RTCFolder: settings[Settings.RTCFOLDER],
         Addinsfolder: workspacefolder.ADDIN,
         RTCAddinsFolder: settings[Settings.RTCADDINS],
         NSTAddinsFolder: settings[Settings.NSTADDINS],
         LicenseFile: settings[Settings.LICENSEFILE],
-        DatabaseName: settings[Settings.SOLUTIONNAME],
+        DatabaseName: settings[Settings.DATABASENAME],
         UIDOffset: settings[Settings.UIDOFFSET],
         NSTEXE: settings[Settings.NST]
     };
@@ -114,7 +114,7 @@ export function startIDE() {
     let ps = new Powershell(scripts.START_IDE);
     ps.observers = observers;
     ps.settings = {
-        databasename: settings[Settings.SOLUTIONNAME],
+        databasename: settings[Settings.DATABASENAME],
         navide: settings[Settings.FINSQL]
     };
     ps.invoke();
@@ -134,7 +134,7 @@ export function startShell() {
         Settings.FINSQL, settings[Settings.FINSQL],
         Settings.SERVICENAME, settings[Settings.SERVICENAME],
         Settings.RTC, settings[Settings.RTC],
-        Settings.SOLUTIONNAME, settings[Settings.SOLUTIONNAME],
+        Settings.DATABASENAME, settings[Settings.DATABASENAME],
         Settings.BASEFOLDER, settings[Settings.BASEFOLDER],
         'repository', workspacefolder.WORKSPACE
     ];
@@ -169,8 +169,8 @@ export function importObjects() {
     ps.settings = { 
         ObjectsFolder: workspacefolder.SOURCE,
         workspacefolder: workspacefolder.WORKSPACE,
-        SolutionName: settings[Settings.SOLUTIONNAME],
-        DatabaseName: settings[Settings.SOLUTIONNAME],
+        SolutionName: settings[Settings.DATABASENAME],
+        DatabaseName: settings[Settings.DATABASENAME],
         LastImportGitHashFilepath: workspacefolder.LASTIMPORTEDGITHASH
     };
     ps.invoke();
