@@ -52,7 +52,7 @@ function validateVersionNumber(versiontext: string, solutionname: string) {
 }
 
 export function inputNewVersionNumber(settings: Object, cb?: Function) {
-    let solutionName = settings[Settings.SOLUTIONNAME];
+    let solutionName = settings[Settings.DATABASENAME];
     let lastversionNumber = settings[Settings.SOLUTIONVERSION];
     let versionNumber = incrementVersionNumber(solutionName, lastversionNumber);
     let options: InputBoxOptions = {
